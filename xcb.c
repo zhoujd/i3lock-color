@@ -537,6 +537,15 @@ static char * get_atom_name(xcb_connection_t* conn, xcb_atom_t atom) {
 }
 
 
+uint8_t xcb_get_key_group_index(xcb_connection_t *conn) {
+    xcb_xkb_get_state_cookie_t cookie;
+    xcb_xkb_get_state_reply_t* reply = NULL;
+    cookie = xcb_xkb_get_state(conn, XCB_XKB_ID_USE_CORE_KBD);
+    reply = xcb_xkb_get_state_reply(conn, cookie, NULL);
+    return reply->group;
+}
+
+
 char* xcb_get_key_group_names(xcb_connection_t *conn) {
     uint8_t xkb_base_event;
     uint8_t xkb_base_error;
@@ -585,15 +594,17 @@ char* xcb_get_key_group_names(xcb_connection_t *conn) {
 
     int length;
     xcb_atom_t *iter;
+    uint8_t index;
     char* answer = NULL;
     length = xcb_xkb_get_names_value_list_groups_length(reply, &list);
     iter = xcb_xkb_get_names_value_list_groups(&list);
+    index = xcb_get_key_group_index(conn);
 
     for (int i = 0; i < length; i++) {
             xcb_atom_t group_name = *iter;
             char* name = get_atom_name(conn, group_name);
             DEBUG("group_name %d: %s\n", i, name);
-            if (i == 0) {
+            if (i == index) {
                 answer = name;
             } else {
                 free(name);
