@@ -882,6 +882,7 @@ static void process_xkb_event(xcb_generic_event_t *gevent) {
                                   event->state_notify.baseGroup,
                                   event->state_notify.latchedGroup,
                                   event->state_notify.lockedGroup);
+            layout_text = get_keylayoutname(keylayout_mode, conn);
             break;
     }
 }
