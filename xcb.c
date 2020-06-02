@@ -542,7 +542,9 @@ uint8_t xcb_get_key_group_index(xcb_connection_t *conn) {
     xcb_xkb_get_state_reply_t* reply = NULL;
     cookie = xcb_xkb_get_state(conn, XCB_XKB_ID_USE_CORE_KBD);
     reply = xcb_xkb_get_state_reply(conn, cookie, NULL);
-    return reply->group;
+    uint8_t ans = reply->group;
+    free(reply);
+    return ans;
 }
 
 
