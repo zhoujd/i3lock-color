@@ -236,6 +236,7 @@ bool skip_repeated_empty_password = false;
 bool pass_media_keys = false;
 bool pass_screen_keys = false;
 bool pass_power_keys = false;
+bool pass_volume_keys = false;
 
 // for the rendering thread, so we can clean it up
 pthread_t draw_thread;
@@ -695,6 +696,17 @@ static void handle_key_press(xcb_key_press_event_t *event) {
             case XKB_KEY_XF86PowerDown:
             case XKB_KEY_XF86PowerOff:
             case XKB_KEY_XF86Sleep:
+                xcb_send_event(conn, true, screen->root, XCB_EVENT_MASK_BUTTON_PRESS, (char *)event);
+                return;
+        }
+    }
+
+    // volume keys
+    if (pass_volume_keys) {
+        switch(ksym) {
+            case XKB_KEY_XF86AudioMute:
+            case XKB_KEY_XF86AudioLowerVolume:
+            case XKB_KEY_XF86AudioRaiseVolume:
                 xcb_send_event(conn, true, screen->root, XCB_EVENT_MASK_BUTTON_PRESS, (char *)event);
                 return;
         }
@@ -1467,6 +1479,7 @@ int main(int argc, char *argv[]) {
         {"pass-media-keys", no_argument, NULL, 601},
         {"pass-screen-keys", no_argument, NULL, 602},
         {"pass-power-keys", no_argument, NULL, 603},
+        {"pass-volume-keys", no_argument, NULL, 604},
 
         // bar indicator stuff
         {"bar-indicator", no_argument, NULL, 700},
@@ -1942,6 +1955,9 @@ int main(int argc, char *argv[]) {
 				break;
 			case 603:
 				pass_power_keys = true;
+				break;
+			case 604:
+				pass_volume_keys = true;
 				break;
 
 			// Bar indicator
