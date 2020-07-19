@@ -28,7 +28,7 @@
 #include <err.h>
 #include <errno.h>
 #include <assert.h>
-#ifdef HAVE_EXPLICIT_BZERO
+#ifdef __OpenBSD__
 #include <bsd_auth.h>
 #else
 #include <security/pam_appl.h>
@@ -404,7 +404,7 @@ static bool load_compose_table(const char *locale) {
  *
  */
 static void clear_password_memory(void) {
-#ifdef __OpenBSD__
+#ifdef HAVE_EXPLICIT_BZERO
     /* Use explicit_bzero(3) which was explicitly designed not to be
      * optimized out by the compiler. */
     explicit_bzero(password, strlen(password));
