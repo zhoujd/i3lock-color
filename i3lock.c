@@ -18,7 +18,6 @@
 #include <stdlib.h>
 #include <pwd.h>
 #include <sys/types.h>
-#include <string.h>
 #include <dirent.h>
 #include <unistd.h>
 #include <stdbool.h>
@@ -29,7 +28,7 @@
 #include <err.h>
 #include <errno.h>
 #include <assert.h>
-#ifdef __OpenBSD__
+#ifdef HAVE_EXPLICIT_BZERO
 #include <bsd_auth.h>
 #else
 #include <security/pam_appl.h>
@@ -45,7 +44,7 @@
 #include <xkbcommon/xkbcommon-x11.h>
 #include <cairo.h>
 #include <cairo/cairo-xcb.h>
-#ifdef __OpenBSD__
+#ifdef HAVE_EXPLICIT_BZERO
 #include <strings.h> /* explicit_bzero(3) */
 #endif
 #include <xcb/xcb_aux.h>
@@ -906,7 +905,7 @@ static void process_xkb_event(xcb_generic_event_t *gevent) {
  * and also redraw the image, if any.
  *
  */
-void handle_screen_resize(void) {
+static void handle_screen_resize(void) {
     xcb_get_geometry_cookie_t geomc;
     xcb_get_geometry_reply_t *geom;
     geomc = xcb_get_geometry(conn, screen->root);
