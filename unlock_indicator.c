@@ -897,6 +897,8 @@ void render_lock(uint32_t *resolution, xcb_drawable_t drawable) {
             screen_number = 0;
         }
 
+		DEBUG("Drawing indicator on %d screens\n", screen_number);
+
         int current_screen = screen_number == 0 ? 0 : screen_number - 1;
         const int end_screen = screen_number == 0 ? xr_screens : screen_number;
         for (; current_screen < end_screen; current_screen++) {
