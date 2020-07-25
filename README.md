@@ -18,7 +18,6 @@
 ![GitHub stars](https://img.shields.io/github/stars/Raymo111/i3lock-color)
 ![GitHub watchers](https://img.shields.io/github/watchers/Raymo111/i3lock-color)
 ![Maintenance](https://img.shields.io/maintenance/yes/2020)
-[![HitCount](http://hits.dwyl.com/Raymo111/i3lock-color.svg)](http://hits.dwyl.com/Raymo111/i3lock-color)
 
 **A modern version of i3lock with color functionality by [eBrnd](https://github.com/eBrnd/i3lock-color), maintained for a few years by [PandorasFox](https://github.com/PandorasFox) and now maintained and being developed by [Raymo111](https://github.com/Raymo111).**
 
