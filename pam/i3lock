@@ -1,7 +1,8 @@
 #
 # PAM configuration file for the i3lock-color screen locker. By default, it includes
-# the 'system-auth' configuration file (see /etc/pam.d/system-auth)
-# Note that i3lock uses 'login' instead of 'system-auth', but this poses an issue on Arch and Gentoo
+# the 'system-auth' configuration file (see /etc/pam.d/system-auth) for Arch and Gentoo
+# and 'login' for Debian. Note that vanilla i3lock upstream uses 'login' instead.
 #
 
-auth include system-auth
+auth include system-auth # For Arch/Gentoo
+#auth include login # For Debian
