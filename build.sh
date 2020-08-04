@@ -1,9 +1,9 @@
 #!/bin/bash
 autoreconf -fiv
 
-if 
-    sed -i "/^auth include system-auth/c\#auth include system-auth" pam/i3lock
-    sed -i "/^#auth include login/c\auth include login" pam/i3lock
+if [[ -f /etc/arch-release ]]
+    sed -i "/^#auth include system-auth/auth include system-auth" pam/i3lock
+    sed -i "/^auth include login/#auth include login" pam/i3lock
 fi
 
 BUILD_DIR=build/
