@@ -1,6 +1,11 @@
 #!/bin/bash
 autoreconf -fiv
 
+if 
+    sed -i "/^auth include system-auth/c\#auth include system-auth" pam/i3lock
+    sed -i "/^#auth include login/c\auth include login" pam/i3lock
+fi
+
 BUILD_DIR=build/
 rm -rf $BUILD_DIR
 mkdir -vp $BUILD_DIR
