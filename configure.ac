@@ -87,6 +87,12 @@ case "$host" in
 	;;
 esac
 
+# Use system-auth instead of login on Arch (TODO: Implement Gentoo as well)
+if [[ -f /etc/arch-release ]]; then
+    sed -i "s/^#auth include system-auth/auth include system-auth/g" pam/i3lock
+    sed -i "s/^auth include login/#auth include login/g" pam/i3lock
+fi
+
 AC_SEARCH_LIBS([iconv_open], [iconv], , [AC_MSG_FAILURE([cannot find the required iconv_open() function despite trying to link with -liconv])])
 
 dnl Each prefix corresponds to a source tarball which users might have
