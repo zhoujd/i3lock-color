@@ -77,6 +77,13 @@ AC_SEARCH_LIBS([ev_run], [ev], , [AC_MSG_FAILURE([cannot find the required ev_ru
 
 AC_SEARCH_LIBS([shm_open], [rt])
 
+# Use system-auth instead of login on Arch (TODO: Implement Gentoo as well)
+if [[ -f /etc/arch-release ]]; then
+	echo "Using PAM for Arch"
+    sed -i "s/^#auth include system-auth/auth include system-auth/g" ../pam/i3lock
+    sed -i "s/^auth include login/#auth include login/g" ../pam/i3lock
+fi
+
 # Only disable PAM on OpenBSD where i3lock uses BSD Auth instead
 case "$host" in
 	*-openbsd*)
@@ -86,12 +93,6 @@ case "$host" in
 	AC_SEARCH_LIBS([pam_authenticate], [pam])
 	;;
 esac
-
-# Use system-auth instead of login on Arch (TODO: Implement Gentoo as well)
-if [[ -f /etc/arch-release ]]; then
-    sed -i "s/^#auth include system-auth/auth include system-auth/g" pam/i3lock
-    sed -i "s/^auth include login/#auth include login/g" pam/i3lock
-fi
 
 AC_SEARCH_LIBS([iconv_open], [iconv], , [AC_MSG_FAILURE([cannot find the required iconv_open() function despite trying to link with -liconv])])
 
