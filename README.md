@@ -1,5 +1,6 @@
-# i3lock - improved screen locker
-
+# i3lock-color
+### The world's most popular non-
+default lockscreen
 ![Language count](https://img.shields.io/github/languages/count/Raymo111/i3lock-color)
 ![Top language](https://img.shields.io/github/languages/top/Raymo111/i3lock-color)
 ![Repo size](https://img.shields.io/github/repo-size/Raymo111/i3lock-color)
