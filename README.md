@@ -1,5 +1,5 @@
 # i3lock-color
-### The world's most popular non-default lockscreen
+### The world's most popular non-default lockscreen.
 
 ![Language count](https://img.shields.io/github/languages/count/Raymo111/i3lock-color)
 ![Top language](https://img.shields.io/github/languages/top/Raymo111/i3lock-color)
