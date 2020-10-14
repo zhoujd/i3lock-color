@@ -1,5 +1,4 @@
 # i3lock-color
-### The world's most popular non-default lockscreen.
 
 ![Language count](https://img.shields.io/github/languages/count/Raymo111/i3lock-color)
 ![Top language](https://img.shields.io/github/languages/top/Raymo111/i3lock-color)
@@ -20,7 +19,8 @@
 ![GitHub watchers](https://img.shields.io/github/watchers/Raymo111/i3lock-color)
 ![Maintenance](https://img.shields.io/maintenance/yes/2020)
 
-**A modern version of i3lock with color functionality by [eBrnd](https://github.com/eBrnd/i3lock-color), maintained for a few years by [PandorasFox](https://github.com/PandorasFox) and now maintained and being developed by [Raymo111](https://github.com/Raymo111).**
+### The world's most popular non-default lockscreen.
+**A modern version of i3lock with color functionality and other features.**
 
 ![i3lock-color in action](screenshot.png "Screenshot sample")
 
@@ -118,6 +118,9 @@ Simply invoke the 'i3lock' command. To get out of it, enter your password and pr
 A [sample script](lock.sh) is included in this repository. [See the script in action](https://streamable.com/fpl46)
 
 On OpenBSD the `i3lock` binary needs to be setgid `auth` to call the authentication helpers, e.g. `/usr/libexec/auth/login_passwd`.
+
+## Contributors
+This project was started by [eBrnd](https://github.com/eBrnd/i3lock-color), maintained for a few years by [PandorasFox](https://github.com/PandorasFox) and now maintained and being developed by [Raymo111](https://github.com/Raymo111). The full list of contributors can be found [here](https://github.com/Raymo111/i3lock-color/graphs/contributors).
 
 ## Upstream
 Please submit pull requests for i3lock things to https://github.com/i3/i3lock and pull requests for additional features on top of regular i3lock at https://github.com/Raymo111/i3lock-color.
