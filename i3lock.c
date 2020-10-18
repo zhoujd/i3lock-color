@@ -893,6 +893,10 @@ static void process_xkb_event(xcb_generic_event_t *gevent) {
                                   event->state_notify.baseGroup,
                                   event->state_notify.latchedGroup,
                                   event->state_notify.lockedGroup);
+			if (layout_text != NULL) {
+				free(layout_text);
+				layout_text = NULL;
+			}
             layout_text = get_keylayoutname(keylayout_mode, conn);
             redraw_screen();
             break;
@@ -1217,7 +1221,7 @@ static void xcb_check_cb(EV_P_ ev_check *w, int revents) {
 
                     /* In the parent process, we exit */
                     if (fork() != 0)
-                        exit(0);
+                        exit(EXIT_SUCCESS);
 
                     ev_loop_fork(EV_DEFAULT);
                 }
@@ -1344,7 +1348,7 @@ static void load_slideshow_images(const char *path, char *image_raw_format) {
     d = opendir(path);
     if (d == NULL) {
         printf("Could not open directory: %s\n", path);
-        exit(0);
+        exit(EXIT_SUCCESS);
     }
 
     while ((dir = readdir(d)) != NULL) {
@@ -2100,8 +2104,6 @@ int main(int argc, char *argv[]) {
         xcb_connection_has_error(conn))
             errx(EXIT_FAILURE, "Could not connect to X11, maybe you need to set DISPLAY?");
 
-
-
     if (xkb_x11_setup_xkb_extension(conn,
                                     XKB_X11_MIN_MAJOR_XKB_VERSION,
                                     XKB_X11_MIN_MINOR_XKB_VERSION,
@@ -2326,6 +2328,10 @@ int main(int argc, char *argv[]) {
         pam_end(pam_handle, PAM_SUCCESS);
     }
 #endif
+	if (layout_text != NULL) {
+		free(layout_text);
+		layout_text = NULL;
+	}
 
     if (stolen_focus == XCB_NONE) {
         return 0;
