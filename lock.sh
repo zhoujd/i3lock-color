@@ -33,7 +33,7 @@ V='#bb00bbbb'  # verifying
 --indicator           \
 --timestr="%H:%M:%S"  \
 --datestr="%A, %m %Y" \
---keylayout 2         \
+--keylayout 1         \
 
 # --veriftext="Drinking verification can..."
 # --wrongtext="Nope!"
