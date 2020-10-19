@@ -794,7 +794,6 @@ void render_lock(uint32_t *resolution, xcb_drawable_t drawable) {
         draw_data.mod_text.size = modifier_size;
         draw_data.mod_text.font = get_font_face(WRONG_FONT);
         draw_data.mod_text.align = modif_align;
-
         draw_data.mod_text.color = wrong16;
     }
 

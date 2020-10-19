@@ -296,7 +296,7 @@ static void u8_dec(char *s, int *i) {
  */
 static char* get_keylayoutname(int mode, xcb_connection_t* conn) {
     if (mode < 0 || mode > 2) return NULL;
-    char* newans = NULL, *answer = xcb_get_key_group_names(conn);
+    char *newans = NULL, *answer = xcb_get_key_group_names(conn);
     DEBUG("keylayout answer is: [%s]\n", answer);
     switch (mode) {
         case 1:
@@ -895,33 +895,33 @@ static void process_xkb_event(xcb_generic_event_t *gevent) {
                                   event->state_notify.lockedGroup);
             /* TODO: freeing layout_text when mode is 2 throws:
             =================================================================
-            ==2600==ERROR: AddressSanitizer: attempting free on address which was not malloc()-ed: 0x602000000919 in thread T0
-                #0 0x7f3065b0e7cf in __interceptor_free (/lib/x86_64-linux-gnu/libasan.so.5+0x10d7cf)
-                #1 0x55c93c97e736 in process_xkb_event ../../i3lock-color/i3lock.c:898
-                #2 0x55c93c980458 in xcb_check_cb ../../i3lock-color/i3lock.c:1237
-                #3 0x7f306512bbc2 in ev_invoke_pending (/lib/x86_64-linux-gnu/libev.so.4+0x5bc2)
-                #4 0x7f306512fb92 in ev_run (/lib/x86_64-linux-gnu/libev.so.4+0x9b92)
-                #5 0x55c93c97c00c in ev_loop /usr/include/ev.h:842
-                #6 0x55c93c986762 in main ../../i3lock-color/i3lock.c:2325
-                #7 0x7f3064de70b2 in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x270b2)
-                #8 0x55c93c97920d in _start (/mnt/c/Users/raymo/Git/i3lock-color/build/i3lock+0x1520d)
+            ==25882==ERROR: AddressSanitizer: attempting free on address which was not malloc()-ed: 0x602000000919 in thread T0
+               #0 0x7fe34ddeb7cf in __interceptor_free (/lib/x86_64-linux-gnu/libasan.so.5+0x10d7cf)
+               #1 0x55c43cbb372b in process_xkb_event ../../i3lock-color/i3lock.c:923
+               #2 0x55c43cbb544d in xcb_check_cb ../../i3lock-color/i3lock.c:1262
+               #3 0x7fe34d408bc2 in ev_invoke_pending (/lib/x86_64-linux-gnu/libev.so.4+0x5bc2)
+               #4 0x7fe34d40cb92 in ev_run (/lib/x86_64-linux-gnu/libev.so.4+0x9b92)
+               #5 0x55c43cbb100c in ev_loop /usr/include/ev.h:842
+               #6 0x55c43cbbb757 in main ../../i3lock-color/i3lock.c:2350
+               #7 0x7fe34d0c40b2 in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x270b2)
+               #8 0x55c43cbae20d in _start (/mnt/c/Users/raymo/Git/i3lock-color/build/i3lock+0x1520d)
 
             0x602000000919 is located 9 bytes inside of 13-byte region [0x602000000910,0x60200000091d)
             allocated by thread T0 here:
-                #0 0x7f3065b0ebc8 in malloc (/lib/x86_64-linux-gnu/libasan.so.5+0x10dbc8)
-                #1 0x55c93c99b20f in get_atom_name ../../i3lock-color/xcb.c:531
-                #2 0x55c93c99b9c2 in xcb_get_key_group_names ../../i3lock-color/xcb.c:607
-                #3 0x55c93c97c389 in get_keylayoutname ../../i3lock-color/i3lock.c:299
-                #4 0x55c93c984e44 in main ../../i3lock-color/i3lock.c:2118
-                #5 0x7f3064de70b2 in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x270b2)
+               #0 0x7fe34ddebbc8 in malloc (/lib/x86_64-linux-gnu/libasan.so.5+0x10dbc8)
+               #1 0x55c43cbd0204 in get_atom_name ../../i3lock-color/xcb.c:531
+               #2 0x55c43cbd09b7 in xcb_get_key_group_names ../../i3lock-color/xcb.c:607
+               #3 0x55c43cbb1389 in get_keylayoutname ../../i3lock-color/i3lock.c:299
+               #4 0x55c43cbb9e39 in main ../../i3lock-color/i3lock.c:2143
+               #5 0x7fe34d0c40b2 in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x270b2)
 
             SUMMARY: AddressSanitizer: bad-free (/lib/x86_64-linux-gnu/libasan.so.5+0x10d7cf) in __interceptor_free
-            ==2600==ABORTING
-            Not freeing results in memory leak.
+            ==25882==ABORTING
+            Not freeing it results in a memory leak.
             */
-  			if (keylayout_mode == 1 && layout_text) {
+  			if (keylayout_mode == 1 && layout_text != NULL) {
                   free(layout_text);
-                  layout_text = 0;
+                  layout_text = NULL;
             }
             layout_text = get_keylayoutname(keylayout_mode, conn);
             redraw_screen();
