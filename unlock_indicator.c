@@ -610,7 +610,7 @@ static te_expr *compile_expression(const char *const from, const char *expressio
     te_expr *expr = te_compile(expression, variables, var_count, &te_err);
     if (te_err) {
         fprintf(stderr, "Failed to reason about '%s' given by '%s'\n", expression, from);
-        exit(1);
+        exit(EXIT_FAILURE);
     }
     return expr;
 }

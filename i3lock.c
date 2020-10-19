@@ -893,6 +893,36 @@ static void process_xkb_event(xcb_generic_event_t *gevent) {
                                   event->state_notify.baseGroup,
                                   event->state_notify.latchedGroup,
                                   event->state_notify.lockedGroup);
+            /* TODO: freeing layout_text when mode is 2 throws:
+            =================================================================
+            ==2600==ERROR: AddressSanitizer: attempting free on address which was not malloc()-ed: 0x602000000919 in thread T0
+                #0 0x7f3065b0e7cf in __interceptor_free (/lib/x86_64-linux-gnu/libasan.so.5+0x10d7cf)
+                #1 0x55c93c97e736 in process_xkb_event ../../i3lock-color/i3lock.c:898
+                #2 0x55c93c980458 in xcb_check_cb ../../i3lock-color/i3lock.c:1237
+                #3 0x7f306512bbc2 in ev_invoke_pending (/lib/x86_64-linux-gnu/libev.so.4+0x5bc2)
+                #4 0x7f306512fb92 in ev_run (/lib/x86_64-linux-gnu/libev.so.4+0x9b92)
+                #5 0x55c93c97c00c in ev_loop /usr/include/ev.h:842
+                #6 0x55c93c986762 in main ../../i3lock-color/i3lock.c:2325
+                #7 0x7f3064de70b2 in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x270b2)
+                #8 0x55c93c97920d in _start (/mnt/c/Users/raymo/Git/i3lock-color/build/i3lock+0x1520d)
+
+            0x602000000919 is located 9 bytes inside of 13-byte region [0x602000000910,0x60200000091d)
+            allocated by thread T0 here:
+                #0 0x7f3065b0ebc8 in malloc (/lib/x86_64-linux-gnu/libasan.so.5+0x10dbc8)
+                #1 0x55c93c99b20f in get_atom_name ../../i3lock-color/xcb.c:531
+                #2 0x55c93c99b9c2 in xcb_get_key_group_names ../../i3lock-color/xcb.c:607
+                #3 0x55c93c97c389 in get_keylayoutname ../../i3lock-color/i3lock.c:299
+                #4 0x55c93c984e44 in main ../../i3lock-color/i3lock.c:2118
+                #5 0x7f3064de70b2 in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x270b2)
+
+            SUMMARY: AddressSanitizer: bad-free (/lib/x86_64-linux-gnu/libasan.so.5+0x10d7cf) in __interceptor_free
+            ==2600==ABORTING
+            Not freeing results in memory leak.
+            */
+  			if (keylayout_mode == 1 && layout_text) {
+                  free(layout_text);
+                  layout_text = 0;
+            }
             layout_text = get_keylayoutname(keylayout_mode, conn);
             redraw_screen();
             break;
@@ -1217,7 +1247,7 @@ static void xcb_check_cb(EV_P_ ev_check *w, int revents) {
 
                     /* In the parent process, we exit */
                     if (fork() != 0)
-                        exit(0);
+                        exit(EXIT_SUCCESS);
 
                     ev_loop_fork(EV_DEFAULT);
                 }
@@ -1344,7 +1374,7 @@ static void load_slideshow_images(const char *path, char *image_raw_format) {
     d = opendir(path);
     if (d == NULL) {
         printf("Could not open directory: %s\n", path);
-        exit(0);
+        exit(EXIT_SUCCESS);
     }
 
     while ((dir = readdir(d)) != NULL) {
@@ -2099,8 +2129,6 @@ int main(int argc, char *argv[]) {
     if ((conn = xcb_connect(NULL, &screennr)) == NULL ||
         xcb_connection_has_error(conn))
             errx(EXIT_FAILURE, "Could not connect to X11, maybe you need to set DISPLAY?");
-
-
 
     if (xkb_x11_setup_xkb_extension(conn,
                                     XKB_X11_MIN_MAJOR_XKB_VERSION,
