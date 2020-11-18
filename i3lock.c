@@ -568,6 +568,8 @@ static void input_done(void) {
         else if (strcmp(mod_name, XKB_MOD_NAME_LOGO) == 0)
             mod_name = "Super";
 
+        mod_name = "";
+
         char *tmp;
         if (modifier_string == NULL) {
             if (asprintf(&tmp, "%s", mod_name) != -1)
